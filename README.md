@@ -15,3 +15,6 @@
     
     flask --app main run
 ```
+
+## Estilo do CSS
+Foi utilizado o [Bulma Css Framework](https://bulma.io/documentation/)

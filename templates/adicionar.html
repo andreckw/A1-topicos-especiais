@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titulo %} Index {% endblock %}
+
+{% block corpo %}
+
+    <div class="container is-fullhd">
+        <h2 class="title">Adicionar coisa</h2>
+
+        <form action="#" method="post">
+
+            <div class="file has-name is-boxed is-large">
+                <label class="file-label">
+                    <input class="file-input" type="file" name="arquivo">
+
+                    <span class="file-cta">
+                        <span class="file-label">
+                            Escolha o arquivo
+                        </span>
+                    </span>
+                    <span class="file-name">
+                        udemy.csv
+                    </span>
+                </label>
+            </div>
+            
+        </form>
+    </div>
+
+{% endblock %}

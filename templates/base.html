@@ -7,11 +7,32 @@
             Index
         {% endblock %}
     </title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 </head>
 <body>
-    <section>
+    <nav class="navbar">
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a href="{{ url_for('index') }}" class="navbar-item">
+                    Prever
+                </a>
+                <a href="{{ url_for('adicionar') }}" class="navbar-item">
+                    Adicionar csv
+                </a>
+            </div>
+        </div>
+
+    </nav>
+
+    <section class="block section">
         {% block corpo %}
         {% endblock %}
     </section>
+
+    <footer class="block footer has-text-centered">
+        Feito por André Luis Nadalin e Renan Toshio
+    </footer>
 </body>
 </html>

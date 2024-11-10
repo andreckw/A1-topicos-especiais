@@ -1,9 +1,40 @@
-{% extends base.html %}
+{% extends "base.html" %}
 
 {% block titulo %} Index {% endblock %}
 
 {% block corpo %}
-<div>
 
-</div>
-{% endbloc %}
+    <div class="container is-fullhd">
+        <h2 class="title">Prever coisa</h2>
+
+        <form action="#" method="post">
+            <div class="grid">
+                <div class="cell">
+                    <div class="field">
+
+                        <label for="label">Porta</label>
+                        <div class="control">
+                            <input type="text" class="input">
+                        </div>
+        
+                    </div>
+                </div>
+
+                <div class="cell">
+
+                    <div class="field">
+
+                        <label for="label">Porta 2</label>
+                        <div class="control">
+                            <input type="text" class="input">
+                        </div>
+        
+                    </div>
+
+                </div>
+            </div>
+            
+        </form>
+    </div>
+
+{% endblock %}
