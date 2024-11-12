@@ -7,24 +7,48 @@
     <div class="container is-fullhd">
         <h2 class="title">Adicionar coisa</h2>
 
-        <form action="#" method="post">
+        <form action="#" method="post" enctype="multipart/form-data">
+            {{ attr.hidden_tag() }}
+            <div class="grid">
+                <div class="cell">
+                    
+                    <div class="file has-name is-boxed is-large" id="file">
+                        <label class="file-label">
+                            {{ attr.file(class="file-input") }}
+                            <span class="file-cta">
+                                <span class="file-label">
+                                    Escolha o arquivo
+                                </span>
+                            </span>
+                            <span class="file-name">
+                                udemy.csv
+                            </span>
+                        </label>
+                    </div>
 
-            <div class="file has-name is-boxed is-large">
-                <label class="file-label">
-                    <input class="file-input" type="file" name="arquivo">
+                </div>
 
-                    <span class="file-cta">
-                        <span class="file-label">
-                            Escolha o arquivo
-                        </span>
-                    </span>
-                    <span class="file-name">
-                        udemy.csv
-                    </span>
-                </label>
+                <div class="cell">
+                    <div class="field">
+                        {{ attr.submit(class="button is-primary") }}
+                    </div>
+                </div>
+
             </div>
+
             
         </form>
     </div>
+
+    <script>
+        const fileInput = document.querySelector("#file input[type=file]");
+
+        fileInput.onchange = () => {
+          if (fileInput.files.length > 0) {
+            const fileName = document.querySelector("#file .file-name");
+            fileName.textContent = fileInput.files[0].name;
+          }
+        };
+    </script>
 
 {% endblock %}
