@@ -20,7 +20,7 @@ def adicionar():
         filename = f"upload/{f.filename}"
         f.save(filename)
 
-        csv_file = "upload/udemy_courses_dataset.csv"
+        csv_file = filename
         df = pd.read_csv(csv_file)
 
         for i, row in df.iterrows():
