@@ -12,6 +12,8 @@
     pip install flask
     pip install -U Flask-SQLAlchemy
     pip install -U Flask-WTF
+    pip install pandas
+    pip install -U scikit-learn
     
     flask --app main run
 ```
