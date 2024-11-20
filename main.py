@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')
+import plotly.express as px
 from flask import *
 from config import app, db
 from formularios import *
@@ -8,6 +11,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
+import matplotlib.pyplot as plt
+import io
+import base64
+
+if not os.path.isdir("upload"):
+    os.mkdir("upload")
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -79,6 +88,7 @@ def index():
 @app.route("/adicionar", methods=["POST", "GET"])
 def adicionar():
     formulario = FileForm()
+    graph1_html, graph2_html, graph3_html = None, None, None
 
     if formulario.validate_on_submit():
         f = formulario.file.data
@@ -100,7 +110,91 @@ def adicionar():
             db.session.add(course)
         db.session.commit()
 
-        return render_template("/adicionar.html", attr=formulario)
+        courses = Course.query.all()
+        df = pd.DataFrame([{
+            'level': c.level,
+            'content_duration': c.content_duration,
+            'subject': c.subject,
+            'is_paid': c.is_paid,
+            'price': c.price
+        } for c in courses])
+
+        # Gráfico 1: Preço médio por nível
+        plt.figure(figsize=(10, 6))
+        df.groupby('level')['price'].mean().plot(kind='bar', color='skyblue')
+        plt.title("Preço Médio por Nível")
+        plt.ylabel("Preço Médio")
+        plt.xlabel("Nível")
+        plt.xticks(rotation=0)  # Rotaciona os rótulos no eixo X em 45 graus
+        img1 = io.BytesIO()
+        plt.savefig(img1, format='png')
+        img1.seek(0)
+        graph_price_level = base64.b64encode(img1.getvalue()).decode()
+        plt.close()
+
+        # Gráfico 2: Contagem de cursos por assunto
+        plt.figure(figsize=(10, 6))
+        df['subject'].value_counts().plot(kind='bar', color='purple')
+        plt.title("Número de Cursos por Assunto")
+        plt.ylabel("Número de Cursos")
+        plt.xlabel("Assunto")
+        plt.xticks(rotation=0)
+        img2 = io.BytesIO()
+        plt.savefig(img2, format='png')
+        img2.seek(0)
+        graph_subjects = base64.b64encode(img2.getvalue()).decode()
+        plt.close()
+
+        # Gráfico 3: Proporção de cursos pagos e gratuitos
+        plt.figure(figsize=(8, 8))
+        df['is_paid'].value_counts().plot(
+            kind='pie', labels=['Pago', 'Gratuito'], autopct='%1.1f%%', startangle=90, colors=['gold', 'lightblue']
+        )
+        plt.title("Proporção de Cursos Pagos e Gratuitos")
+        img3 = io.BytesIO()
+        plt.savefig(img3, format='png')
+        img3.seek(0)
+        graph_paid_free = base64.b64encode(img3.getvalue()).decode()
+        plt.close()
+
+        # Gráfico 4: Duração média dos cursos por nível
+        plt.figure(figsize=(10, 6))
+        df.groupby('level')['content_duration'].mean().plot(kind='bar', color='green')
+        plt.title("Duração Média dos Cursos por Nível")
+        plt.ylabel("Duração Média (Horas)")
+        plt.xlabel("Nível")
+        plt.xticks(rotation=0)
+        img4 = io.BytesIO()
+        plt.savefig(img4, format='png')
+        img4.seek(0)
+        graph_duration_level = base64.b64encode(img4.getvalue()).decode()
+        plt.close()
+
+        # Gráfico 5: Distribuição de preços dos cursos pagos
+        plt.figure(figsize=(10, 6))
+        df[df['is_paid'] == True]['price'].plot(kind='hist', bins=15, color='orange', edgecolor='black')
+        plt.title("Distribuição de Preços dos Cursos Pagos")
+        plt.xlabel("Preço")
+        plt.ylabel("Frequência")
+        img5 = io.BytesIO()
+        plt.savefig(img5, format='png')
+        img5.seek(0)
+        graph_price_distribution = base64.b64encode(img5.getvalue()).decode()
+        plt.close()
+
+
+
+        # Passar todos os gráficos para o template
+        return render_template(
+            "/adicionar.html",
+            attr=formulario,
+            graph_price_level=graph_price_level,
+            graph_subjects=graph_subjects,
+            graph_paid_free=graph_paid_free,
+            graph_duration_level=graph_duration_level,
+            graph_price_distribution=graph_price_distribution,
+        )
+
 
     return render_template("/adicionar.html", attr=formulario)
 

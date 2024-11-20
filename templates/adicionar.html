@@ -1,13 +1,13 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
 
-{% block titulo %} Index {% endblock %}
+{% block titulo %} Adicionar coisa {% endblock %}
 
 {% block corpo %}
 
     <div class="container is-fullhd">
         <h2 class="title">Adicionar coisa</h2>
 
-        <form action="#" method="post" enctype="multipart/form-data">
+        <form action="{{ url_for('adicionar') }}" method="post" enctype="multipart/form-data">
             {{ attr.hidden_tag() }}
             <div class="grid">
                 <div class="cell">
@@ -38,6 +38,32 @@
 
             
         </form>
+
+        {% if graph_price_level %}
+            <h2>Preço Médio por Nível</h2>
+            <img src="data:image/png;base64,{{ graph_price_level }}" alt="Gráfico de Preço Médio por Nível">
+        {% endif %}
+
+        {% if graph_subjects %}
+            <h2>Contagem de Cursos por Assunto</h2>
+            <img src="data:image/png;base64,{{ graph_subjects }}" alt="Gráfico de Cursos por Assunto">
+        {% endif %}
+
+        {% if graph_paid_free %}
+            <h2>Proporção de Cursos Pagos e Gratuitos</h2>
+            <img src="data:image/png;base64,{{ graph_paid_free }}" alt="Gráfico de Proporção de Cursos Pagos e Gratuitos">
+        {% endif %}
+
+        {% if graph_duration_level %}
+            <h2>Duração Média dos Cursos por Nível</h2>
+            <img src="data:image/png;base64,{{ graph_duration_level }}" alt="Gráfico de Duração Média dos Cursos por Nível">
+        {% endif %}
+
+        {% if graph_price_distribution %}
+            <h2>Distribuição de Preços dos Cursos Pagos</h2>
+            <img src="data:image/png;base64,{{ graph_price_distribution }}" alt="Gráfico de Distribuição de Preços">
+        {% endif %}
+
     </div>
 
     <script>
