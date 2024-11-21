@@ -5,7 +5,7 @@
 {% block corpo %}
 
     <div class="container is-fullhd">
-        <h2 class="title">Adicionar coisa</h2>
+        <h2 class="title">Adicionar arquivo</h2>
 
         <form action="{{ url_for('adicionar') }}" method="post" enctype="multipart/form-data">
             {{ attr.hidden_tag() }}
@@ -39,15 +39,11 @@
             
         </form>
 
-        {% if graph_price_level %}
-            <h2>Preço Médio por Nível</h2>
-            <img src="data:image/png;base64,{{ graph_price_level }}" alt="Gráfico de Preço Médio por Nível">
+        {% if graph2 %}
+            <h2>Preços Médios por nível de curso</h2>
+            <div>{{ graph2|safe }}</div>
         {% endif %}
 
-        {% if graph_subjects %}
-            <h2>Contagem de Cursos por Assunto</h2>
-            <img src="data:image/png;base64,{{ graph_subjects }}" alt="Gráfico de Cursos por Assunto">
-        {% endif %}
 
         {% if graph_paid_free %}
             <h2>Proporção de Cursos Pagos e Gratuitos</h2>
@@ -62,6 +58,12 @@
         {% if graph_price_distribution %}
             <h2>Distribuição de Preços dos Cursos Pagos</h2>
             <img src="data:image/png;base64,{{ graph_price_distribution }}" alt="Gráfico de Distribuição de Preços">
+        {% endif %}
+
+
+        {% if graph3 %}
+            <h2>Distribuição de Alunos por Área de Estudo</h2>
+            <div>{{ graph3|safe }}</div>
         {% endif %}
 
     </div>

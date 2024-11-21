@@ -88,7 +88,7 @@ def index():
 @app.route("/adicionar", methods=["POST", "GET"])
 def adicionar():
     formulario = FileForm()
-    graph1_html, graph2_html, graph3_html = None, None, None
+    graph2_html, graph3_html = None, None
 
     if formulario.validate_on_submit():
         f = formulario.file.data
@@ -119,33 +119,16 @@ def adicionar():
             'price': c.price
         } for c in courses])
 
-        # Gráfico 1: Preço médio por nível
-        plt.figure(figsize=(10, 6))
-        df.groupby('level')['price'].mean().plot(kind='bar', color='skyblue')
-        plt.title("Preço Médio por Nível")
-        plt.ylabel("Preço Médio")
-        plt.xlabel("Nível")
-        plt.xticks(rotation=0)  # Rotaciona os rótulos no eixo X em 45 graus
-        img1 = io.BytesIO()
-        plt.savefig(img1, format='png')
-        img1.seek(0)
-        graph_price_level = base64.b64encode(img1.getvalue()).decode()
-        plt.close()
+        
+        #Gráfico 1: Preço medio por nivel de curso
+        if 'level' in df.columns and 'price' in df.columns:
+            avg_price = df.groupby('level')['price'].mean().reset_index()
+            fig2 = px.bar(avg_price, x="level", y="price", title="Preços Médios por Nível de Curso",
+                        labels={"level": "Nível", "price": "Preço Médio"}, color="level")
+            graph2_html = fig2.to_html(full_html=False)
 
-        # Gráfico 2: Contagem de cursos por assunto
-        plt.figure(figsize=(10, 6))
-        df['subject'].value_counts().plot(kind='bar', color='purple')
-        plt.title("Número de Cursos por Assunto")
-        plt.ylabel("Número de Cursos")
-        plt.xlabel("Assunto")
-        plt.xticks(rotation=0)
-        img2 = io.BytesIO()
-        plt.savefig(img2, format='png')
-        img2.seek(0)
-        graph_subjects = base64.b64encode(img2.getvalue()).decode()
-        plt.close()
 
-        # Gráfico 3: Proporção de cursos pagos e gratuitos
+        # Gráfico 2: Proporção de cursos pagos e gratuitos
         plt.figure(figsize=(8, 8))
         df['is_paid'].value_counts().plot(
             kind='pie', labels=['Pago', 'Gratuito'], autopct='%1.1f%%', startangle=90, colors=['gold', 'lightblue']
@@ -157,7 +140,7 @@ def adicionar():
         graph_paid_free = base64.b64encode(img3.getvalue()).decode()
         plt.close()
 
-        # Gráfico 4: Duração média dos cursos por nível
+        # Gráfico 3: Duração média dos cursos por nível
         plt.figure(figsize=(10, 6))
         df.groupby('level')['content_duration'].mean().plot(kind='bar', color='green')
         plt.title("Duração Média dos Cursos por Nível")
@@ -170,7 +153,7 @@ def adicionar():
         graph_duration_level = base64.b64encode(img4.getvalue()).decode()
         plt.close()
 
-        # Gráfico 5: Distribuição de preços dos cursos pagos
+        # Gráfico 4: Distribuição de preços dos cursos pagos
         plt.figure(figsize=(10, 6))
         df[df['is_paid'] == True]['price'].plot(kind='hist', bins=15, color='orange', edgecolor='black')
         plt.title("Distribuição de Preços dos Cursos Pagos")
@@ -182,17 +165,27 @@ def adicionar():
         graph_price_distribution = base64.b64encode(img5.getvalue()).decode()
         plt.close()
 
+        
+        #gráfico 5: Distribuição de cursos por tema
+        if 'subject' in df.columns:
+            fig3 = px.pie(df, names="subject", title="Distribuição de Cursos por Tema")
+            graph3_html = fig3.to_html(full_html=False)
+
+
+
+
+
 
 
         # Passar todos os gráficos para o template
         return render_template(
             "/adicionar.html",
             attr=formulario,
-            graph_price_level=graph_price_level,
-            graph_subjects=graph_subjects,
             graph_paid_free=graph_paid_free,
             graph_duration_level=graph_duration_level,
             graph_price_distribution=graph_price_distribution,
+            graph2=graph2_html,
+            graph3=graph3_html
         )
 
 
