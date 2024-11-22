@@ -42,6 +42,8 @@
     pip install -U Flask-WTF
     pip install pandas
     pip install -U scikit-learn
+    pip install matplotlib
+    pip install plotly
     
     flask --app main run
 ```

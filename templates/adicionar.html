@@ -39,33 +39,51 @@
             
         </form>
 
+
+    </div>
+    <div class="container is-fullhd">
         {% if graph2 %}
-            <h2>Preços Médios por nível de curso</h2>
-            <div>{{ graph2|safe }}</div>
+            <hr>
+            <div class="box">
+                <h3 class="title">Preços Médios por nível de curso</h3>
+                <div>{{ graph2|safe }}</div>
+            </div>
         {% endif %}
 
 
         {% if graph_paid_free %}
-            <h2>Proporção de Cursos Pagos e Gratuitos</h2>
-            <img src="data:image/png;base64,{{ graph_paid_free }}" alt="Gráfico de Proporção de Cursos Pagos e Gratuitos">
+            <hr>
+            <div class="box">
+
+                <h3 class="title">Proporção de Cursos Pagos e Gratuitos</h3>
+                <img src="data:image/png;base64,{{ graph_paid_free }}" alt="Gráfico de Proporção de Cursos Pagos e Gratuitos">
+            </div>
         {% endif %}
 
         {% if graph_duration_level %}
-            <h2>Duração Média dos Cursos por Nível</h2>
-            <img src="data:image/png;base64,{{ graph_duration_level }}" alt="Gráfico de Duração Média dos Cursos por Nível">
+            <hr>
+            <div class="box">
+                <h3 class="title">Duração Média dos Cursos por Nível</h3>
+                <img src="data:image/png;base64,{{ graph_duration_level }}" alt="Gráfico de Duração Média dos Cursos por Nível">
+            </div>
         {% endif %}
 
         {% if graph_price_distribution %}
-            <h2>Distribuição de Preços dos Cursos Pagos</h2>
-            <img src="data:image/png;base64,{{ graph_price_distribution }}" alt="Gráfico de Distribuição de Preços">
+            <hr>
+            <div class="box">
+                <h3 class="title">Distribuição de Preços dos Cursos Pagos</h3>
+                <img src="data:image/png;base64,{{ graph_price_distribution }}" alt="Gráfico de Distribuição de Preços">
+            </div>
         {% endif %}
 
 
         {% if graph3 %}
-            <h2>Distribuição de Alunos por Área de Estudo</h2>
-            <div>{{ graph3|safe }}</div>
+            <hr>
+            <div class="box">
+                <h3 class="title">Distribuição de Alunos por Área de Estudo</h3>
+                <div>{{ graph3|safe }}</div>
+            </div>
         {% endif %}
-
     </div>
 
     <script>

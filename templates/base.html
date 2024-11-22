@@ -27,12 +27,22 @@
     </nav>
 
     <section class="block section">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="notification is-info">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
         {% block corpo %}
         {% endblock %}
     </section>
 
     <footer class="block footer has-text-centered">
-        Feito por André Luis Nadalin, Renan Toshio, Leonardo Herédia e Luiz Simm
+        Feito por André Nadalin, Renan Toshio, Leonardo Herédia e Luiz Simm
     </footer>
 </body>
 </html>

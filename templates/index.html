@@ -41,28 +41,14 @@
             </div>
 
             <div class="field">
-                <label class="label">Curso Pago?</label>
-                <div class="control">
-                    <label class="radio">
-                        <input type="radio" name="is_paid" value="true" required>
-                        Sim
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="is_paid" value="false">
-                        Não
-                    </label>
-                </div>
-            </div>
-
-            <div class="field">
                 <div class="control">
                     <button type="submit" class="button is-primary">Prever Preço</button>
                 </div>
             </div>
         </form>
-
-        <div id="result" class="notification is-info" style="display: none;">
-            <p>Preço previsto: $<span id="predicted-price"></span></p>
+        <br>
+        <div id="result" class="box notification is-info" style="display: none;">
+            <p><span id="predicted-price"></span></p>
         </div>
     </div>
 
@@ -76,8 +62,14 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('result').style.display = 'block';
-                document.getElementById('predicted-price').textContent = data.predicted_price;
+                console.log(data);
+                if (data.error) {
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('predicted-price').textContent = data.error;
+                } else {
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('predicted-price').textContent = "Preço previsto: $" + data.predicted_price;
+                }
             });
         };
     </script>

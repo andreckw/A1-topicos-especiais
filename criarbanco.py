@@ -1,5 +1,9 @@
 from config import app, db
 from models import *
 
-with app.app_context():
-    db.create_all()
+def criarbanco():
+    with app.app_context():
+        db.create_all()
+
+if __name__ == "__main__":
+    criarbanco()

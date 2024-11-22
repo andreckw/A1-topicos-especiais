@@ -4,6 +4,7 @@ import plotly.express as px
 from flask import *
 from config import app, db
 from formularios import *
+from criarbanco import criarbanco
 import os
 import pandas as pd
 from models import Course
@@ -30,10 +31,8 @@ def index():
         
         # Get all courses from database
         courses = Course.query.all()
-        
-        if not courses:
-            flash("Não há dados suficientes para fazer a previsão. Por favor adicione dados primeiro.")
-            return render_template("/index.html")
+        if len(courses) == 0:
+            return jsonify({"error": "Não há dados suficientes para fazer a previsão. Por favor adicione dados primeiro."})
 
         # Prepare data for model
         df = pd.DataFrame([{
@@ -193,6 +192,9 @@ def adicionar():
 
 
 if __name__ == "__main__":
+
+    if not os.path.isfile("instance/couse.db"):
+        criarbanco()
 
     if not os.path.isdir("upload"):
         os.mkdir("upload")
